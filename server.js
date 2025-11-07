@@ -10,6 +10,12 @@ const PORT = process.env.PORT || 3000;
 const DATA_FILE = path.join(__dirname, 'data.json');
 
 // Middleware
+const cors = require("cors");
+app.use(cors({
+  origin: ["http://localhost:5173", "https://yourfrontend.onrender.com"],
+  methods: ["GET"],
+}));
+
 app.use(express.json());
 app.use(rateLimit({
   windowMs: 60 * 60 * 1000, // 1 hour
