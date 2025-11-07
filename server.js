@@ -9,12 +9,31 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const DATA_FILE = path.join(__dirname, 'data.json');
 
-// Middleware
+// --- CRITICAL FIX: Resilient CORS Configuration ---
 const cors = require("cors");
+const allowedOrigins = [
+  // For local development
+  "http://localhost:5173",
+  "http://localhost:3000",
+];
+
 app.use(cors({
-  origin: ["http://localhost:5173", "https://rahulkarru.github.io/Coding_DashBoard/"],
+  origin: (origin, callback) => {
+    // Allow requests with no origin (like server-to-server or local file testing)
+    if (!origin) return callback(null, true); 
+
+    // Check if the origin is explicitly allowed (localhost)
+    // OR if it starts with the base GitHub Pages domain
+    if (allowedOrigins.includes(origin) || origin.startsWith("https://rahulkarru.github.io")) {
+      callback(null, true);
+    } else {
+      // If the origin is not allowed, reject the request
+      callback(new Error('Not allowed by CORS policy: ' + origin), false);
+    }
+  },
   methods: ["GET"],
 }));
+// --- END CORS FIX ---
 
 app.use(express.json());
 app.use(rateLimit({
