@@ -12,7 +12,7 @@ const DATA_FILE = path.join(__dirname, 'data.json');
 // Middleware
 const cors = require("cors");
 app.use(cors({
-  origin: ["http://localhost:5173", "https://yourfrontend.onrender.com"],
+  origin: ["http://localhost:5173", "https://rahulkarru.github.io/Coding_DashBoard/"],
   methods: ["GET"],
 }));
 
